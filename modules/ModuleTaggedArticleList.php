@@ -149,9 +149,10 @@ class ModuleTaggedArticleList extends \ModuleGlobalArticlelist
 	 */
 	protected function getTags($id)
 	{
-		return $this->Database->prepare("SELECT * FROM tl_tag WHERE id = ? AND from_table = ? ORDER BY tag ASC")
+		$tags = $this->Database->prepare("SELECT tag FROM tl_tag WHERE id = ? AND from_table = ? ORDER BY tag ASC")
 			->execute($id, 'tl_article')
 			->fetchEach('tag');
+		return $tags;
 	}
 
 	/**
