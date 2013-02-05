@@ -36,5 +36,7 @@ $GLOBALS['TL_LANG']['tl_module']['linktoarticles'] = array('Article list links t
 $GLOBALS['TL_LANG']['tl_module']['restrict_to_column'] = array('Restrict to specific column', 'Restrict the tag cloud to tags of articles from a specific column of the page template.');
 $GLOBALS['TL_LANG']['tl_module']['articlelist_tpl'] = array('Article list template', 'Here you can select the article list template.');
 $GLOBALS['TL_LANG']['tl_module']['article_showtags']       = array('Show article tags', 'Select this option to show all assigned tags below each article. This only works if you use a tag enabled article template, e.g. mod_global_articlelist');
+$GLOBALS['TL_LANG']['tl_module']['articlelist_firstorder'] = array('First sort criteria', 'Select the first sort criteria for the resulting article list.');
+$GLOBALS['TL_LANG']['tl_module']['articlelist_secondorder'] = array('Second sort criteria', 'Select the second sort criteria for the resulting article list.');
 
 ?>

@@ -1,6 +1,4 @@
-<?php
-
-namespace Contao;
+<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
  * TYPOlight webCMS
@@ -36,7 +34,7 @@ namespace Contao;
  * @author     Helmut Schottmüller <typolight@aurealis.de>
  * @package    Controller
  */
-class ModuleTagCloudArticles extends \ModuleTagCloud
+class ModuleTagCloudArticles extends ModuleTagCloud
 {
 	/**
 	 * Display a wildcard in the back end
