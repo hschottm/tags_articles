@@ -31,6 +31,22 @@ class tl_module_tags_articles extends tl_module
 			return $this->getTemplateGroup('mod_');
 		}
 	}  
+
+	public function getArticlelistOrder(DataContainer $dc)
+	{
+		$this->loadLanguageFile('tl_article');
+		return array(
+			'' => '-',
+			'tstamp ASC' => $GLOBALS['TL_LANG']['tl_article']['tstamp'][0] . ' (' . $GLOBALS['TL_LANG']['MSC']['ascending'] . ')',
+			'tstamp DESC' => $GLOBALS['TL_LANG']['tl_article']['tstamp'][0] . ' (' . $GLOBALS['TL_LANG']['MSC']['descending'] . ')',
+			'title ASC' => $GLOBALS['TL_LANG']['tl_article']['title'][0] . ' (' . $GLOBALS['TL_LANG']['MSC']['ascending'] . ')',
+			'title DESC' => $GLOBALS['TL_LANG']['tl_article']['title'][0] . ' (' . $GLOBALS['TL_LANG']['MSC']['descending'] . ')',
+			'start ASC' => $GLOBALS['TL_LANG']['tl_article']['start'][0] . ' (' . $GLOBALS['TL_LANG']['MSC']['ascending'] . ')',
+			'start DESC' => $GLOBALS['TL_LANG']['tl_article']['start'][0] . ' (' . $GLOBALS['TL_LANG']['MSC']['descending'] . ')',
+			'stop ASC' => $GLOBALS['TL_LANG']['tl_article']['stop'][0] . ' (' . $GLOBALS['TL_LANG']['MSC']['ascending'] . ')',
+			'stop DESC' => $GLOBALS['TL_LANG']['tl_article']['stop'][0] . ' (' . $GLOBALS['TL_LANG']['MSC']['descending'] . ')'
+		);
+	}
 }
 
 /**
@@ -40,7 +56,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]      = 'show_in_co
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]      = 'restrict_to_column';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'article_showtags';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['tagcloudarticles']    = '{title_legend},name,headline,type;{size_legend},tag_maxtags,tag_buckets,tag_named_class,tag_on_page_class,tag_show_reset;{template_legend:hide},cloud_template;{tagextension_legend},tag_related,tag_topten;{redirect_legend},tag_jumpTo,keep_url_params;{datasource_legend},tag_articles,restrict_to_column;{expert_legend:hide},cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['taggedArticleList']   = '{title_legend},name,headline,type;{config_legend},show_in_column;{showtags_legend},article_showtags,hide_on_empty;{template_legend},articlelist_tpl,linktoarticles;{datasource_legend},tag_articles;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['taggedArticleList']   = '{title_legend},name,headline,type;{config_legend},show_in_column;{showtags_legend},article_showtags,hide_on_empty;{template_legend},articlelist_tpl,linktoarticles,articlelist_firstorder,articlelist_secondorder;{datasource_legend},tag_articles;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['show_in_column']    = 'inColumn';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['restrict_to_column']    = 'inColumn';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['article_showtags']    = 'tag_jumpTo';
@@ -94,6 +110,28 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['articlelist_tpl'] = array
 	'options_callback'        => array('tl_module_tags_articles', 'getArticlelistTemplates'),
 	'eval'                    => array('tl_class' => 'w50'),
 	'sql'                     => "varchar(64) NOT NULL default 'mod_global_articlelist'"
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['articlelist_firstorder'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['articlelist_firstorder'],
+	'default'                 => 'title ASC',
+	'exclude'                 => true,
+	'inputType'               => 'select',
+	'options_callback'        => array('tl_module_tags_articles', 'getArticlelistOrder'),
+	'eval'                    => array('tl_class' => 'w50'),
+	'sql'                     => "varchar(64) NOT NULL default 'title ASC'"
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['articlelist_secondorder'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['articlelist_secondorder'],
+	'default'                 => '',
+	'exclude'                 => true,
+	'inputType'               => 'select',
+	'options_callback'        => array('tl_module_tags_articles', 'getArticlelistOrder'),
+	'eval'                    => array('tl_class' => 'w50'),
+	'sql'                     => "varchar(64) NOT NULL default ''"
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['article_showtags'] = array

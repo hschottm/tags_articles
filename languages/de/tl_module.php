@@ -27,5 +27,7 @@ $GLOBALS['TL_LANG']['tl_module']['articlelist_tpl']['0'] = "Artikellisten-Templa
 $GLOBALS['TL_LANG']['tl_module']['articlelist_tpl']['1'] = "Hier können Sie das Artikellisten-Template auswählen.";
 $GLOBALS['TL_LANG']['tl_module']['article_showtags']['0'] = "Artikel-Auszeichnungen anzeigen";
 $GLOBALS['TL_LANG']['tl_module']['article_showtags']['1'] = "Wählen Sie diese Option aus, um die zu einem Artikel zugehörigen Auszeichnungen unter dem Artikel anzuzeigen. Diese Einstellung funktioniert nur, wenn Sie ein Artikel-Template verwenden, das für die Ausgabe von Auszeichnungen vorgesehen wurde, wie z.B. mod_global_articlelist";
- 
+$GLOBALS['TL_LANG']['tl_module']['articlelist_firstorder'] = array('Erstes Sortierkriterium', 'Wählen Sie das erste Sortierkriterium für die Artikelliste aus.');
+$GLOBALS['TL_LANG']['tl_module']['articlelist_secondorder'] = array('Zweites Sortierkriterium', 'Wählen Sie das zweite Sortierkriterium für die Artikelliste aus.');
+
 ?>

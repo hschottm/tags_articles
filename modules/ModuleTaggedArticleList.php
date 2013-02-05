@@ -74,7 +74,7 @@ class ModuleTaggedArticleList extends \ModuleGlobalArticlelist
 			// Get published articles
 			$pids = join($this->arrPages, ",");
 
-			$order_by = 'title ASC';
+			$orders = array();
 			if (isset($GLOBALS['MISC']['tag_articles_id'][$this->id]['ORDER_BY_START'])
 				&& in_array($GLOBALS['MISC']['tag_articles_id'][$this->id]['ORDER_BY_START'], array('ASC', 'DESC')))
 			{
@@ -87,17 +87,30 @@ class ModuleTaggedArticleList extends \ModuleGlobalArticlelist
 				// Note however, after creating a new page, you still have to set the article start date explicitly, because the Contao core
 				// auto inserts an article for you and doesn't check for mandatory fields. As soon as you edit the article settings,
 				// e.g. to add tags :) you'll be forced to also fill in the 'start' field.
-				$order_by = 'start ' . $GLOBALS['MISC']['tag_articles_id'][$this->id]['ORDER_BY_START'] . ', title ASC';
+				array_push($orders, 'start ' . $GLOBALS['MISC']['tag_articles_id'][$this->id]['ORDER_BY_START'] . ', title ASC');
+			}
+			if (strlen($this->articlelist_firstorder))
+			{
+				array_push($orders, $this->articlelist_firstorder);
+			}
+			if (strlen($this->articlelist_secondorder))
+			{
+				array_push($orders, $this->articlelist_secondorder);
+			}
+			$order_by = '';
+			if (count($orders))
+			{
+				$order_by = ' ORDER BY ' . implode(', ', $orders);
 			}
 
 			if ($this->show_in_column)
 			{
-				$objArticles = $this->Database->prepare("SELECT id, pid, title, alias, inColumn, cssID, teaser, start FROM tl_article WHERE inColumn = ? AND pid IN (" . $pids . ") " . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<?) AND (stop='' OR stop>?) AND published=1" : "") . " ORDER BY " . $order_by)
+				$objArticles = $this->Database->prepare("SELECT id, pid, title, alias, inColumn, cssID, teaser, start FROM tl_article WHERE inColumn = ? AND pid IN (" . $pids . ") " . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<?) AND (stop='' OR stop>?) AND published=1" : "") . $order_by)
 											  ->execute($this->inColumn, $time, $time);
 			}
 			else
 			{
-				$objArticles = $this->Database->prepare("SELECT id, pid, title, alias, inColumn, cssID, teaser, start FROM tl_article WHERE pid IN (" . $pids . ") " . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<?) AND (stop='' OR stop>?) AND published=1" : "") . " ORDER BY " . $order_by)
+				$objArticles = $this->Database->prepare("SELECT id, pid, title, alias, inColumn, cssID, teaser, start FROM tl_article WHERE pid IN (" . $pids . ") " . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<?) AND (stop='' OR stop>?) AND published=1" : "") . $order_by)
 											  ->execute($time, $time);
 			}
 			if ($objArticles->numRows < 1)
