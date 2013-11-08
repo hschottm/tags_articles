@@ -3,8 +3,8 @@
 namespace Contao;
 
 /**
- * @copyright  Helmut Schottmüller 2009
- * @author     Helmut Schottmüller <typolight@aurealis.de>
+ * @copyright  Helmut Schottmüller 2009-2013 
+ * @author     Helmut Schottmüller <https://github.com/hschottm>
  * @package    Frontend
  * @license    LGPL
  * @filesource
@@ -15,8 +15,8 @@ namespace Contao;
  * Class ModuleTaggedArticleList
  *
  * Front end module "tagged article list".
- * @copyright  Helmut Schottmüller 2009
- * @author     Helmut Schottmüller <typolight@aurealis.de>
+ * @copyright  Helmut Schottmüller 2009-2013 
+ * @author     Helmut Schottmüller <https://github.com/hschottm>
  * @package    Controller
  */
 class ModuleTaggedArticleList extends \ModuleGlobalArticlelist
@@ -162,7 +162,7 @@ class ModuleTaggedArticleList extends \ModuleGlobalArticlelist
 	 */
 	protected function getTags($id)
 	{
-		$tags = $this->Database->prepare("SELECT tag FROM tl_tag WHERE id = ? AND from_table = ? ORDER BY tag ASC")
+		$tags = $this->Database->prepare("SELECT tag FROM tl_tag WHERE tid = ? AND from_table = ? ORDER BY tag ASC")
 			->execute($id, 'tl_article')
 			->fetchEach('tag');
 		return $tags;
@@ -205,15 +205,15 @@ class ModuleTaggedArticleList extends \ModuleGlobalArticlelist
 			{
 				if (count($tagids))
 				{
-					$tagids = $this->Database->prepare("SELECT id FROM tl_tag WHERE from_table = ? AND tag = ? AND id IN (" . join($tagids, ",") . ")")
+					$tagids = $this->Database->prepare("SELECT tid FROM tl_tag WHERE from_table = ? AND tag = ? AND tid IN (" . join($tagids, ",") . ")")
 						->execute('tl_article', $tag)
-						->fetchEach('id');
+						->fetchEach('tid');
 				}
 				else if ($first)
 				{
-					$tagids = $this->Database->prepare("SELECT id FROM tl_tag WHERE from_table = ? AND tag = ?")
+					$tagids = $this->Database->prepare("SELECT tid FROM tl_tag WHERE from_table = ? AND tag = ?")
 						->execute('tl_article', $tag)
-						->fetchEach('id');
+						->fetchEach('tid');
 					$first = false;
 				}
 			}

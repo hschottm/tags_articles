@@ -24,9 +24,9 @@ class TagListArticles extends TagList
 		$ids = array();
 		for ($i = 0; $i < count($for_tags); $i++)
 		{
-			$arr = $this->Database->prepare("SELECT DISTINCT tl_tag.id FROM tl_tag, tl_article WHERE tl_tag.id = tl_article.id AND from_table = ?  AND tl_tag.id IN (" . join($this->arrArticles, ',') . ") AND tag = ?" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<?) AND (stop='' OR stop>?) AND published=1" : "") . " ORDER BY tl_tag.id ASC")
+			$arr = $this->Database->prepare("SELECT DISTINCT tl_tag.tid FROM tl_tag, tl_article WHERE tl_tag.tid = tl_article.id AND from_table = ?  AND tl_tag.tid IN (" . join($this->arrArticles, ',') . ") AND tag = ?" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<?) AND (stop='' OR stop>?) AND published=1" : "") . " ORDER BY tl_tag.tid ASC")
 				->execute(array('tl_article', $for_tags[$i], time(), time()))
-				->fetchEach('id');
+				->fetchEach('tid');
 			if ($i == 0)
 			{
 				$ids = $arr;
@@ -40,7 +40,7 @@ class TagListArticles extends TagList
 		$arrCloudTags = array();
 		if (count($ids))
 		{
-			$objTags = $this->Database->prepare("SELECT tag, COUNT(tag) as count FROM tl_tag, tl_article WHERE tl_tag.id = tl_article.id AND from_table = ?" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<?) AND (stop='' OR stop>?) AND published=1" : "") . " AND tl_tag.id IN (" . join($ids, ",") . ") GROUP BY tag ORDER BY tag ASC")
+			$objTags = $this->Database->prepare("SELECT tag, COUNT(tag) as count FROM tl_tag, tl_article WHERE tl_tag.tid = tl_article.id AND from_table = ?" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<?) AND (stop='' OR stop>?) AND published=1" : "") . " AND tl_tag.tid IN (" . join($ids, ",") . ") GROUP BY tag ORDER BY tag ASC")
 				->execute('tl_article', time(), time());
 			$list = "";
 			$tags = array();
@@ -50,7 +50,7 @@ class TagListArticles extends TagList
 				{
 					if (!in_array($objTags->tag, $for_tags))
 					{
-						$count = count($this->Database->prepare("SELECT tl_tag.id FROM tl_tag, tl_article WHERE tl_tag.id = tl_article.id AND tag = ?" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<?) AND (stop='' OR stop>?) AND published=1" : "") . " AND from_table = ? AND tl_tag.id IN (" . join($ids, ",") . ")")
+						$count = count($this->Database->prepare("SELECT tl_tag.tid FROM tl_tag, tl_article WHERE tl_tag.tid = tl_article.id AND tag = ?" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<?) AND (stop='' OR stop>?) AND published=1" : "") . " AND from_table = ? AND tl_tag.tid IN (" . join($ids, ",") . ")")
 							->execute($objTags->tag, time(), time(), 'tl_article')
 							->fetchAllAssoc());
 						array_push($tags, array('tag_name' => $objTags->tag, 'tag_count' => $count));
@@ -71,7 +71,7 @@ class TagListArticles extends TagList
 		{
 			if (count($this->arrArticles))
 			{
-				$objTags = $this->Database->prepare("SELECT tag, COUNT(tag) as count FROM tl_tag, tl_article WHERE tl_tag.id = tl_article.id AND from_table = ?" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<?) AND (stop='' OR stop>?) AND published=1" : "") . " AND tl_tag.id IN (" . join($this->arrArticles, ',') . ") GROUP BY tag ORDER BY tag ASC")
+				$objTags = $this->Database->prepare("SELECT tag, COUNT(tag) as count FROM tl_tag, tl_article WHERE tl_tag.tid = tl_article.id AND from_table = ?" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<?) AND (stop='' OR stop>?) AND published=1" : "") . " AND tl_tag.tid IN (" . join($this->arrArticles, ',') . ") GROUP BY tag ORDER BY tag ASC")
 					->execute('tl_article', time(), time());
 				$list = "";
 				$tags = array();
