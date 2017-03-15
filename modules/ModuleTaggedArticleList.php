@@ -3,7 +3,7 @@
 namespace Contao;
 
 /**
- * @copyright  Helmut Schottmüller 2009-2013 
+ * @copyright  Helmut Schottmüller 2009-2013
  * @author     Helmut Schottmüller <https://github.com/hschottm>
  * @package    Frontend
  * @license    LGPL
@@ -15,7 +15,7 @@ namespace Contao;
  * Class ModuleTaggedArticleList
  *
  * Front end module "tagged article list".
- * @copyright  Helmut Schottmüller 2009-2013 
+ * @copyright  Helmut Schottmüller 2009-2013
  * @author     Helmut Schottmüller <https://github.com/hschottm>
  * @package    Controller
  */
@@ -46,7 +46,7 @@ class ModuleTaggedArticleList extends \ModuleGlobalArticlelist
 
 		$this->strTemplate = (strlen($this->articlelist_tpl)) ? $this->articlelist_tpl : $this->strTemplate;
 		$this->articlelist_template = $this->strTemplate;
-		
+
 		return parent::generate();
 	}
 
@@ -63,7 +63,7 @@ class ModuleTaggedArticleList extends \ModuleGlobalArticlelist
 			$this->getRelevantPages($objPageWithId->id);
 		}
 	}
-	
+
 	protected function getArticlesForPages()
 	{
 		$this->arrArticles = array();
@@ -120,10 +120,6 @@ class ModuleTaggedArticleList extends \ModuleGlobalArticlelist
 
 			global $objPage;
 			$format = $objPage->outputFormat;
-			if (!empty($format))
-			{
-				$this->import('String');
-			}
 
 			while ($objArticles->next())
 			{
@@ -143,11 +139,11 @@ class ModuleTaggedArticleList extends \ModuleGlobalArticlelist
 				{
 					if ($format == 'xhtml')
 					{
-						$objArticles->teaser = $this->String->toXhtml($objArticles->teaser);
+						$objArticles->teaser = StringUtil::toXhtml($objArticles->teaser);
 					}
 					else
 					{
-						$objArticles->teaser = $this->String->toHtml5($objArticles->teaser);
+						$objArticles->teaser = StringUtil::toHtml5($objArticles->teaser);
 					}
 				}
 
@@ -174,7 +170,7 @@ class ModuleTaggedArticleList extends \ModuleGlobalArticlelist
 	protected function compile()
 	{
 		global $objPage;
-		
+
 		// block this method to prevent recursive call of getArticle if the HTML of an article is the same as the current article
 		if ($this->Session->get('block'))
 		{
@@ -195,7 +191,7 @@ class ModuleTaggedArticleList extends \ModuleGlobalArticlelist
 		$this->getArticlesForPages();
 
 		$tagids = array();
-		
+
 		$relatedlist = (strlen($this->Input->get('related'))) ? preg_split("/,/", $this->Input->get('related')) : array();
 		$alltags = array_merge(array($this->Input->get('tag')), $relatedlist);
 		$first = true;
